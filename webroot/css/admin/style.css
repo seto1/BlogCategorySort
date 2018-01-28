@@ -1,0 +1,23 @@
+#BlogCategoryTree {
+	border: 1px solid #DDD;
+}
+#BlogCategoryTree li {
+	margin: 0;
+	padding: 0;
+}
+#BlogCategoryTree li ul {
+	margin-left: 26px;
+}
+#BlogCategoryTree .jstree-themeicon {
+	cursor: move;
+}
+#BlogCategoryTree .jstree-leaf > .jstree-ocl,
+#BlogCategoryTree .jstree-node {
+	background: none;
+}
+#BlogCategoryTree .jstree-closed > .jstree-ocl {
+	background-position: 0 0;
+}
+#BlogCategoryTree .jstree-open > .jstree-ocl {
+	background-position: -32px 0;
+}
