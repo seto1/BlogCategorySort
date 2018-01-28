@@ -19,7 +19,6 @@ class BlogCategorySortController extends AppController {
 		$this->set('blogCategories', $blogCategories);
 
 		$this->pageTitle = '[' . $content['Content']['title'] . '] カテゴリ並び替え';
-
 	}
 
 	public function admin_ajax_move() {

@@ -86,6 +86,7 @@
 						$.bcUtil.hideLoader();
 					},
 					error: function (XMLHttpRequest, textStatus, errorThrown) {
+						$.bcUtil.hideLoader();
 						$.bcUtil.showAjaxError('並び替えに失敗しました。');
 					},
 				});
