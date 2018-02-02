@@ -7,6 +7,12 @@ class BlogCategorySortController extends AppController {
 	public $subMenuElements = ['BlogCategorySort.index'];
 
 	public function admin_index($blogContentId) {
+		if ($this->BlogCategory->verify() !== true) {
+			clearAllCache();
+			$this->BlogCategory->recover();
+			$this->setMessage('ツリー構造の整合性にエラーがあったため再構築しました。', true);
+		}
+		
 		$content = $this->BcContents->getContent($blogContentId);
 
 		$blogCategories = $this->BlogCategory->find('threaded',[
@@ -22,6 +28,10 @@ class BlogCategorySortController extends AppController {
 	}
 
 	public function admin_ajax_move() {
+		if(!$this->request->is('ajax')) {
+			$this->ajaxError(500, '無効な処理です。');
+		}
+
 		$this->autoRender = false;
 
 		$this->BlogCategory->Behaviors->load('BlogCategorySort.TreeSort');

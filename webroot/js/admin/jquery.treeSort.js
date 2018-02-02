@@ -24,7 +24,14 @@
 						'stripes': true,
 						'variant': 'large',
 					},
-					'check_callback' : true,
+					"check_callback": function (operation, node, node_parent, node_position, more) {
+						if (operation == 'move_node') {
+							if (more.ref && more.pos == 'i' && node.parent == more.ref.id) {
+								return false;
+							}
+							return true;
+						}
+					}
 				},
 				'plugins': [
 					'dnd',
@@ -33,6 +40,7 @@
 				],
 				'dnd': {
 					'large_drop_target': true,
+					'inside_pos': 'last',
 				},
 				'state': {
 					'key': $.treeSort.config.stateKey,
@@ -87,7 +95,7 @@
 					},
 					error: function (XMLHttpRequest, textStatus, errorThrown) {
 						$.bcUtil.hideLoader();
-						$.bcUtil.showAjaxError('並び替えに失敗しました。');
+						$.bcUtil.showAjaxError('並び替えに失敗しました。ページをリロードして下さい。');
 					},
 				});
 			});

@@ -48,8 +48,6 @@ class TreeSortBehavior extends TreeBehavior {
 			return false;
 		}
 
-		$anchorSort = $this->getOrderSameParent($Model, $anchorId, $anchorData[$Model->name]['parent_id']);
-
 		// 親を変更
 		if ($data[$Model->name]['parent_id'] != $anchorData[$Model->name]['parent_id']) {
 			$data = $Model->save([$Model->name => [
@@ -58,13 +56,20 @@ class TreeSortBehavior extends TreeBehavior {
 			]], false);
 		}
 
+		$anchorSort = $this->getOrderSameParent($Model, $anchorId, $anchorData[$Model->name]['parent_id']);
 		$currentSort = $this->getOrderSameParent($Model, $id, $anchorData[$Model->name]['parent_id']);
 
 		// オフセットを計算して移動
 		if ($anchorPosition == 'below') {
 			$offset = $anchorSort - $currentSort;
+			if ($offset > 0) {
+				$offset -= 1;
+			}
 		} elseif ($anchorPosition == 'above') {
-			$offset = $anchorSort - $currentSort + 1;
+			$offset = $anchorSort - $currentSort;
+			if ($offset < 0) {
+				$offset += 1;
+			}
 		}
 
 		return $this->moveOffset($Model, $id, $offset);
@@ -109,22 +114,12 @@ class TreeSortBehavior extends TreeBehavior {
  * @return array|false
  */
 	public function moveOffset(Model $Model, $id, $offset) {
-		$offset = (int) $offset;
 		if ($offset > 0) {
-			$result = $Model->moveDown($id, abs($offset));
+			return $Model->moveDown($id, abs($offset));
 		} elseif($offset < 0) {
-			$result = $Model->moveUp($id, abs($offset));
-		} else {
-			$result = true;
+			return $Model->moveUp($id, abs($offset));
 		}
 
-		if ($result) {
-			return $Model->find('first', [
-				'conditions' => ['id' => $id],
-				'recursive' => -1
-			]);
-		} else {
-			return false;
-		}
+		return true;
 	}
 }
