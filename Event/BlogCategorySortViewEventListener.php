@@ -7,12 +7,28 @@ class BlogCategorySortViewEventListener extends BcViewEventListener {
 	];
 
 	public function blogBlogCategoriesAfterElement(CakeEvent $event) {
-		if (!BcUtil::isAdminSystem() || $event->data['name'] != 'submenu') {
+		$View = $event->subject();
+
+		if (!BcUtil::isAdminSystem()) {
 			return;
 		}
 
-		$View = $event->subject();
-		echo $View->element('BlogCategorySort.admin/blog_category_sort/link');
+		if ($View->adminTheme === 'admin-third') {
+			if ($event->data['name'] !== 'header') {
+				return;
+			}
+
+			$View->BcAdmin->addAdminMainBodyHeaderLinks([
+				'url' => ['plugin' => 'blog_category_sort', 'controller' => 'blog_category_sort',
+					'action' => 'index', $View->passedArgs[0]],
+				'title' => __d('baser', '並び替え'),
+			]);
+		} else {
+			if ($event->data['name'] !== 'submenu') {
+				return;
+			}
+			echo $View->element('BlogCategorySort.admin/blog_category_sort/link');
+		}
 	}
 
 }
