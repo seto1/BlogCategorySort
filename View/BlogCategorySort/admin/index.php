@@ -1,5 +1,6 @@
 <?php if (!empty($blogCategories)): ?>
-	<?php $this->BcBaser->js(['admin/vendors/jquery.jstree-3.3.1/jstree.min', 'BlogCategorySort.admin/jquery.treeSort']) ?>
+	<?php $this->BcBaser->js(['admin/vendors/jquery.jstree-3.3.8/jstree.min',
+		'admin/vendors/jquery.jstree-3.3.1/jstree.min', 'BlogCategorySort.admin/jquery.treeSort']) ?>
 	<?php $this->BcBaser->css(['BlogCategorySort.admin/style']) ?>
 	<?php $treeId = 'BlogCategoryTree' ?>
 
